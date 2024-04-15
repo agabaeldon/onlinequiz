@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Page</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .login-link a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .login-link span {
+    display: block;
+    margin-top: 10px; /* Added margin-top */
+}
+.login-link h3:hover {
+    color: orangered;
+}
+
+
+.login-link h3 {
+    text-align: center;
+    margin: 0; 
+    color: darkblue;
+}
+.title{
+    text-align: center;
+}
+
+.error {
+            color: red;
+            margin-top: 5px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="title"> <h2> Online Quiz System</h2></div>
+    <div class="container">
+        <h2>Register for an Account</h2>
+        <form id="registerForm" action="process_register.php" method="POST">
+            <div class="form-group">
+                <label for="fullname">Full Name</label>
+                <input type="text" id="fullname" name="fullname">
+                <div id="fullnameError" class="error" style="display: none;"></div>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email">
+                <div id="emailError" class="error" style="display: none;"></div>
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone</label>
+                <input type="tel" id="phone" name="phone">
+                <div id="phoneError" class="error" style="display: none;"></div>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password">
+                <div id="passwordError" class="error" style="display: none;"></div>
+            </div>
+            <div class="form-group">
+                <label for="confirm-password">Confirm Password</label>
+                <input type="password" id="confirm-password" name="confirm-password">
+                <div id="confirmPasswordError" class="error" style="display: none;"></div>
+            </div>
+            <button type="submit">Register</button>
+        </form>
+        <div class="login-link">
+            <p>Already have an account? <a href="login.html">Login</a></p>
+            <span><a href="index.html"><h3>Back Home</h3></a></span>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('registerForm');
+            const fullnameInput = document.getElementById('fullname');
+            const emailInput = document.getElementById('email');
+            const phoneInput = document.getElementById('phone');
+            const passwordInput = document.getElementById('password');
+            const confirmPasswordInput = document.getElementById('confirm-password');
+            const fullnameError = document.getElementById('fullnameError');
+            const emailError = document.getElementById('emailError');
+            const phoneError = document.getElementById('phoneError');
+            const passwordError = document.getElementById('passwordError');
+            const confirmPasswordError = document.getElementById('confirmPasswordError');
+
+            form.addEventListener('submit', function(event) {
+                let isValid = true;
+
+                // Clear previous error messages
+                fullnameError.textContent = '';
+                emailError.textContent = '';
+                phoneError.textContent = '';
+                passwordError.textContent = '';
+                confirmPasswordError.textContent = '';
+
+                // Validation logic for each field
+
+                if (!fullnameInput.value.trim()) {
+                    fullnameError.textContent = 'Full Name is required';
+                    fullnameError.style.display = 'block';
+                    isValid = false;
+                }
+
+                if (!emailInput.value.trim()) {
+                    emailError.textContent = 'Email is required';
+                    emailError.style.display = 'block';
+                    isValid = false;
+                }
+
+                // Additional validation for email format
+
+                if (!phoneInput.value.trim()) {
+                    phoneError.textContent = 'Phone is required';
+                    phoneError.style.display = 'block';
+                    isValid = false;
+                }
+
+                if (!passwordInput.value.trim()) {
+                    passwordError.textContent = 'Password is required';
+                    passwordError.style.display = 'block';
+                    isValid = false;
+                }
+
+                if (passwordInput.value !== confirmPasswordInput.value) {
+                    confirmPasswordError.textContent = 'Passwords do not match';
+                    confirmPasswordError.style.display = 'block';
+                    isValid = false;
+                }
+
+                if (!isValid) {
+                    // Prevent form submission if there are errors
+                    event.preventDefault();
+                }
+            });
+            fullnameInput.addEventListener('input', function() {
+                fullnameError.style.display = 'none';
+            });
+
+            emailInput.addEventListener('input', function() {
+                emailError.style.display = 'none';
+            });
+
+            phoneInput.addEventListener('input', function() {
+                phoneError.style.display = 'none';
+            });
+
+            passwordInput.addEventListener('input', function() {
+                passwordError.style.display = 'none';
+            });
+
+            confirmPasswordInput.addEventListener('input', function() {
+                confirmPasswordError.style.display = 'none';
+            });
+        });
+    </script>
+</body>
+</html>

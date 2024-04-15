@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Home</title>
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.header {
+    background-color: darkblue;
+    color: #fff;
+    padding: 20px 0;
+}
+
+.header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 24px;
+}
+
+.nav-menu {
+    list-style-type: none;
+}
+
+.nav-item {
+    display: inline-block;
+    margin-right: 20px;
+}
+
+.nav-link {
+    color: #fff;
+    text-decoration: none;
+
+}
+.nav-link:hover{
+    background-color: orangered;
+    padding: 10px;
+    border-radius: 15px;
+    color: white;
+    font-style: bold;
+}
+.top {
+    background-image: url('parliament.jpg'); /* Replace 'parliament.jpg' with the actual path to your image */
+    background-size: contain; /* Ensure the entire image is contained within the section */
+    background-repeat: no-repeat; /* Prevent the background image from repeating */
+    background-position: center center; /* Center the background image both horizontally and vertically */
+    padding: 110px 0; /* Increase padding to increase the height of the section */
+    text-align: center;
+}
+
+.top::before {
+    content: ''; /* Add a pseudo-element to create the layer */
+    position: absolute; /* Position the layer absolutely within the container */
+    top: 11%;
+    left: 0;
+    width: 100%; /* Cover the entire width of the container */
+    height: 400px; /* Cover the entire height of the container */
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.65)50%, rgba(77, 74, 74, 0)); /* Gradient from semi-transparent black to transparent white */
+}
+
+.top-content {
+    position: relative; /* Ensure the content is positioned relative to the container */
+    z-index: 9999; /* Ensure the content appears above the layer */
+    color: white; /* Set text color to white for contrast */
+    font-style: bold;
+}
+.top-title {
+    font-size: 36px;
+    margin-bottom: 25px;
+    font-style: bold;
+
+}
+
+.top-text {
+    font-size: 18px;
+    margin-bottom: 20px;
+    font-style: bold;
+
+}
+
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    text-decoration: none;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.button:hover {
+    background-color: oranger;
+}
+
+.primary {
+    background-color: #007bff;
+}
+
+.features {
+    padding: 10px 0;
+}
+
+.section-title {
+    font-size: 32px;
+    margin-bottom: 30px;
+    text-align: center;
+    border-bottom: 1px solid black;
+    padding: 5px;
+}
+
+.feature-list {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.feature-item {
+    flex-basis: calc(33.33% - 40px);
+    margin-bottom: 20px;
+}
+
+.feature-title {
+    font-size: 24px;
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.login, .register {
+    padding: 100px 0;
+}
+
+.register-form, .login-form {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.register-form input, .login-form input {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.register-form button, .login-form button {
+    width: 100%;
+    padding: 10px;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.register-form button:hover, .login-form button:hover {
+    background-color: #0056b3;
+}
+
+.footer {
+    background-color: darkblue;
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+}
+.feature-item {
+        flex-basis: calc(33.33% - 40px);
+        margin-bottom: 30px;
+    }
+
+    .card {
+        background-color: whitesmoke;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 30px; /* Increased padding */
+        transition: box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+background-color: darkblue;
+color: white;    }
+.step-circle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    background-color: #007bff; 
+    border-radius: 50%; 
+    color: #fff; 
+    font-size: 24px; 
+    font-weight: bold;
+    margin-right: 20px; 
+}
+.container {
+    text-align: center;
+    margin-top: 5px;
+  }
+
+  .qr-div {
+            text-align: center;
+            margin-top: 5px;
+        }
+        .qrtitle {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .qr-code {
+    width: 300px; 
+    height: auto; 
+    max-height: 300px; 
+}
+
+
+</style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1 class="logo">ONLINE  QUIZ SYSTEM</h1>
+            <nav class="navbar">
+                <ul class="nav-menu">
+                    <li class="nav-item"><a href="#features" class="nav-link">Steps</a></li>
+                    <li class="nav-item"><a href="login.html" class="nav-link">Log In</a></li>
+                    <li class="nav-item"><a href="register.html" class="nav-link">Register</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section id="top" class="top">
+            <div class="top-content">
+                <h3 class="top-title">Welcome to Parlianment of Uganda</h3>
+                <p class="top-text">Empowering your experience with innovative solutions.</p>
+                <a href="login.html" class="button primary">Get Started</a>
+            </div>
+        </div>
+    </section>
+    <section id="features" class="features">
+        <div class="container">
+            <h2 class="section-title">Steps to Participate</h2>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <div class="step-circle">1</div>
+                    <div class="card">
+                        <h3 class="feature-title">Register</h3>
+                        <p class="feature-description">Create an account to join our community and participate in the discussions.</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="step-circle">2</div>
+                    <div class="card">
+                        <h3 class="feature-title">Login</h3>
+                        <p class="feature-description">Login to your account using your credentials to access the platform.</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="step-circle">3</div>
+                    <div class="card">
+                        <h3 class="feature-title">Answer Questions</h3>
+                        <p class="feature-description">Engage in the community by answering yes/no questions and sharing your thoughts.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <div class="qr-div">
+        <div class="qrtitle">Scan to Connect</div>
+        <img class="qr-code" src="qr-code.jpg" alt="QR Code">
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>ONLINE QUIZ SYSTEM.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
