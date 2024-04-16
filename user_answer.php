@@ -14,71 +14,45 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $question_id = $_POST['question_id'];
         $user_id = $_SESSION['user_id'];
 
-        $sql = "SELECT CorrectAnswer FROM Questions WHERE ID = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("i", $question_id);
-        $stmt->execute();
-        $stmt->bind_result($correct_answer);
-        $stmt->fetch();
-        $stmt->close();
+        // Convert array answer to string
+        $answer = implode(",", $answer);
 
-        $status = ($answer == $correct_answer) ? "Correct" : "Wrong";
+        // Update the answer and status to "rejected" if "Rather Leave" is checked
+        if (in_array("leave", $_POST['answer'])) {
+            $status = "Rejected";
+            $answer = "rejected";
+        } else {
+            // Retrieve the correct answer from the database
+            $sql_correct_answer = "SELECT CorrectAnswer FROM Questions WHERE ID = ?";
+            $stmt_correct_answer = $conn->prepare($sql_correct_answer);
+            $stmt_correct_answer->bind_param("i", $question_id);
+            $stmt_correct_answer->execute();
+            $stmt_correct_answer->bind_result($correct_answer);
+            $stmt_correct_answer->fetch();
+            $stmt_correct_answer->close();
 
-        $sql = "INSERT INTO UserAnswers (UserID, QuestionID, UserAnswer, Status) VALUES (?, ?, ?, ?)";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("iiss", $user_id, $question_id, $answer, $status);
-        $stmt->execute();
-        $stmt->close();
+            // Check if the answer is correct or wrong
+            $status = ($answer == $correct_answer) ? "Correct" : "Wrong";
+        }
+
+        // Insert the user's answer into the database
+        $sql_insert_answer = "INSERT INTO UserAnswers (UserID, QuestionID, UserAnswer, Status) VALUES (?, ?, ?, ?)";
+        $stmt_insert_answer = $conn->prepare($sql_insert_answer);
+        $stmt_insert_answer->bind_param("iiss", $user_id, $question_id, $answer, $status);
+        $stmt_insert_answer->execute();
+        $stmt_insert_answer->close();
+
+        // Redirect to userboard.php and show success message
+        header("Location: userboard.php?success=1");
+        exit();
+    } else {
+        // Redirect to userboard.php with failure parameter if answer or question_id is not set
+        header("Location: userboard.php?failure=1");
+        exit();
     }
-}
-
-$sql = "SELECT * FROM Questions";
-$result = $conn->query($sql);
-
-if ($result->num_rows > 0) {
-    $questions = $result->fetch_all(MYSQLI_ASSOC);
 } else {
-    $questions = array(); 
+    // Redirect to userboard.php with invalid request parameter if not a POST request
+    header("Location: userboard.php?invalid_request=1");
+    exit();
 }
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz Result</title>
-    <style> 
-        .btn {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: #fff;
-            text-decoration: none;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .btn:hover {
-            background-color: #0056b3;
-        }
-
-        .btn:active {
-            background-color: #0056b3;
-            transform: translateY(1px);
-        }
-    </style>
-</head>
-<body>
-
-<?php
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    echo "<p>Your answer was submitted successfully!</p>";
-}
-?>
-
-<a href="userboard.php" class="btn btn-primary">Back to Home</a>
-
-</body>
-</html>

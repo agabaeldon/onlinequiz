@@ -88,66 +88,99 @@
         .multiple-answers {
             color: red;
         }
+        .view-button {
+    padding: 8px 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.view-button:hover {
+    background-color: #45a049;
+}
+
     </style>
 </head>
 <body>
 <header>
-        <h1>User Answers</h1>
-        <a href="admindashboard.php" class="back-home">Back Home</a>
-    </header>
- <table>
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Question</th>
-                <th>User Email</th>
-                <th>User Answer</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php
-            include_once "db.php";
-            $answer_id = 1;
+    <h1>User Answers</h1>
+    <a href="admindashboard.php" class="back-home">Back Home</a>
+</header>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Question</th>
+        <th>Abstract</th>
+        <th>Yes</th>
+        <th>No</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php
+    include_once "db.php";
 
-            $sql = "SELECT ua.ID AS AnswerID, q.QuestionText, u.Email, ua.UserAnswer, ua.Status
-                    FROM UserAnswers ua
-                    INNER JOIN Users u ON ua.UserID = u.ID
-                    INNER JOIN Questions q ON ua.QuestionID = q.ID
-                    ORDER BY ua.ID";
-            $result = $conn->query($sql);
+    // Retrieve all questions from the Questions table
+    $sql = "SELECT ID AS QuestionID, QuestionText FROM Questions ORDER BY date_added DESC";
+    $result = $conn->query($sql);
 
-            if ($result->num_rows > 0) {
-                $prev_question_id = null;
-                while ($row = $result->fetch_assoc()) {
-                    echo "<tr>";
-                    echo "<td>" . $answer_id++ . "</td>"; 
-                    echo "<td>" . $row['QuestionText'] . "</td>";
-                    echo "<td>" . $row['Email'] . "</td>";
-                    echo "<td>";
-                    if ($prev_question_id !== $row['AnswerID']) {
-                        echo $row['UserAnswer'];
-                    } else {
-                        echo "<span class='multiple-answers'>(Multiple Answers)</span>";
-                    }
-                    echo "</td>";
-                    echo "<td>";
-                    if ($row['Status'] == 'Correct') {
-                        echo "<i class='material-icons' style='color: green;'>check</i>";
-                    } else {
-                        echo "<i class='material-icons' style='color: red;'>clear</i>";
-                    }
-                    echo "</td>";
-                    echo "</tr>";
-                    $prev_question_id = $row['AnswerID'];
-                }
-            } else {
-                echo "<tr><td colspan='5'>No data found</td></tr>";
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $questionID = $row['QuestionID'];
+
+            // Retrieve the count of "Yes" answers for the specific question
+            $sql_yes = "SELECT COUNT(*) AS YesCount FROM UserAnswers WHERE QuestionID = $questionID AND UserAnswer = 'yes'";
+            $result_yes = $conn->query($sql_yes);
+            $row_yes = $result_yes->fetch_assoc();
+            $yes_count = $row_yes['YesCount'];
+
+            // Retrieve the count of "No" answers for the specific question
+            $sql_no = "SELECT COUNT(*) AS NoCount FROM UserAnswers WHERE QuestionID = $questionID AND UserAnswer = 'no'";
+            $result_no = $conn->query($sql_no);
+            $row_no = $result_no->fetch_assoc();
+            $no_count = $row_no['NoCount'];
+
+            // Retrieve the count of "rejected" answers for the specific question
+            $sql_abs = "SELECT COUNT(*) AS AbsCount FROM UserAnswers WHERE QuestionID = $questionID AND UserAnswer = 'rejected'";
+            $result_abs = $conn->query($sql_abs);
+            $row_abs = $result_abs->fetch_assoc();
+            $abs_count = $row_abs['AbsCount'];
+
+            // If no votes found, set the counts to 0
+            if ($yes_count == 0 && $no_count == 0 && $abs_count == 0) {
+                $yes_count = 0;
+                $no_count = 0;
+                $abs_count = 0;
             }
 
-            $conn->close();
-            ?>
-        </tbody>
-    </table>
+            echo "<tr>";
+            echo "<td>" . $row['QuestionID'] . "</td>";
+            echo "<td>" . $row['QuestionText'] . "</td>";
+            echo "<td>$abs_count</td>";
+            echo "<td>$yes_count</td>";
+            echo "<td>$no_count</td>";
+            echo "<td><button class='view-button' onclick=\"viewGraph($questionID)\">View Graph</button></td>";
+            echo "</tr>";
+        }
+    } else {
+        echo "<tr><td colspan='6'>No questions found</td></tr>";
+    }
+
+    $conn->close();
+    ?>
+    </tbody>
+</table>
+>
+
+<script>
+    function viewGraph(questionID) {
+        window.location.href = "graph.php?id=" + questionID;
+    }
+</script>
+
 </body>
 </html>

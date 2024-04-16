@@ -119,56 +119,57 @@
         </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const form = document.getElementById('loginForm');
-            const emailInput = document.getElementById('email');
-            const passwordInput = document.getElementById('password');
-            const emailError = document.getElementById('emailError');
-            const passwordError = document.getElementById('passwordError');
-
-            form.addEventListener('submit', function(event) {
-                let isValid = true;
-
-                // Clear previous error messages
-                emailError.textContent = '';
-                passwordError.textContent = '';
-
-                // Email validation
-                if (!emailInput.value.trim()) {
-                    emailError.textContent = 'Email is required';
-                    isValid = false;
-                }
-
-                // Password validation
-                if (!passwordInput.value.trim()) {
-                    passwordError.textContent = 'Password is required';
-                    isValid = false;
-                }
-
-                if (!isValid) {
-                    // Prevent form submission if there are errors
-                    event.preventDefault();
-                }
-            });
-
-            // Show error messages in red below the input fields
-            emailInput.addEventListener('input', function() {
-                if (!emailInput.value.trim()) {
-                    emailError.textContent = 'Email is required';
-                } else {
-                    emailError.textContent = '';
-                }
-            });
-
-            passwordInput.addEventListener('input', function() {
-                if (!passwordInput.value.trim()) {
-                    passwordError.textContent = 'Password is required';
-                } else {
-                    passwordError.textContent = '';
-                }
-            });
-        });
-    </script>
 </body>
 </html>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('loginForm');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const emailError = document.getElementById('emailError');
+        const passwordError = document.getElementById('passwordError');
+
+        form.addEventListener('submit', function(event) {
+            let isValid = true;
+
+            // Clear previous error messages
+            emailError.textContent = '';
+            passwordError.textContent = '';
+
+            // Email validation
+            if (!emailInput.value.trim()) {
+                emailError.textContent = 'Email is required';
+                isValid = false;
+            }
+
+            // Password validation
+            if (!passwordInput.value.trim()) {
+                passwordError.textContent = 'Password is required';
+                isValid = false;
+            }
+
+            if (!isValid) {
+                // Prevent form submission if there are errors
+                event.preventDefault();
+            }
+        });
+
+        // Show error messages in red below the input fields
+        emailInput.addEventListener('input', function() {
+            if (!emailInput.value.trim()) {
+                emailError.textContent = 'Email is required';
+            } else {
+                emailError.textContent = '';
+            }
+        });
+
+        passwordInput.addEventListener('input', function() {
+            if (!passwordInput.value.trim()) {
+                passwordError.textContent = 'Password is required';
+            } else {
+                passwordError.textContent = '';
+            }
+        });
+    });
+</script>
